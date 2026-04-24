@@ -25,4 +25,5 @@ void DrawMap();
 void FillMap();
 void Battle(int monster_id);
 void DrawButtle();
+void OpenMap();
 #endif

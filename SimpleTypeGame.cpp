@@ -11,7 +11,7 @@ bool TypeWriterStart(int& min_score, float&timer_time_start) {
     task_text.setPosition(sf::Vector2f(task_text_x, task_text_y));
     score_text.setString("score");
     task_text.setString("A");
-    sf::RenderWindow window(sf::VideoMode({window_widght, window_height}),game_name);
+    sf::RenderWindow window(sf::VideoMode({window_widght, window_height}),type_game_name);
     float timer_time = timer_time_start;
     float timer_minus = timer_minus_def;
     int score = TypeWriterPlay(timer_text, score_text, task_text, window, clock,

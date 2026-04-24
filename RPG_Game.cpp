@@ -12,24 +12,26 @@ sf::Text main_text(font);
 std::map<std::pair<int, int>, Chest> chests;
 std::pair<int, int> door_coordinates;
 std::string upper_text;
+std::vector<std::vector<int>> unlocked_layout;
 void Start1() {
   window.clear();
   sprites_layout.clear();
   layout_plan.clear();
   layout_coordinates.clear();
   chests.clear();
+  unlocked_layout.clear();
   Player::getInstance()->Reset();
   GenerateObjects(layout_plan);
   GenerateCoordinates(layout_coordinates);
   font.openFromFile("CyrilicOld.ttf");
   sf::Clock clock;
   FillMap();
+  unlocked_layout[Player::getInstance()->x][Player::getInstance()->y] = 1;
   upper_text = "hp:";
   main_text.setString(upper_text + std::to_string(Player::getInstance()->hp));
   window.draw(main_text);
   window.display();
-  float timer_time = timer_time_def;
-  float timer_minus = timer_minus_def;
+  DrawMap();
   Play1(clock);
 }
 void Battle(int monster_id) { 
@@ -93,7 +95,9 @@ void FillMap() {
   int chest_idx = 0;
   for (int i = 0; i < map_size; i++) {
     std::vector<sf::Sprite> current_sprites;
+    std::vector<int> buf_unlocked;
     sprites_layout.push_back(current_sprites);
+    unlocked_layout.push_back(buf_unlocked);
     for (int j = 0; j < map_size; j++) {
       sf::Texture texture;
       texture.loadFromFile(tyles[layout_plan[i][j]].second);
@@ -119,6 +123,7 @@ void FillMap() {
       if (layout_plan[i][j] == exit_tyle_idx) {
         door_coordinates = {i, j};
       }
+      unlocked_layout[i].push_back(0);
     }
   }
 }
@@ -216,16 +221,19 @@ void MovePlayer(int next_x, int next_y) {
 }
 void DrawMap() {
   window.clear();
+  OpenMap();
   for (int i = 0; i < map_size; i++) {
     for (int j = 0; j < map_size; j++) {
-      sf::Texture texture;
-      texture.loadFromFile(tyles[layout_plan[i][j]].second);
-      sf::Sprite sprite(texture);
-      sprite.setScale({tyles[layout_plan[i][j]].first.first,
-                       tyles[layout_plan[i][j]].first.second});
-      sprite.setPosition(
-          {layout_coordinates[i][j].first, layout_coordinates[i][j].second});
-      window.draw(sprite);
+      if (unlocked_layout[i][j] == 1) {
+        sf::Texture texture;
+        texture.loadFromFile(tyles[layout_plan[i][j]].second);
+        sf::Sprite sprite(texture);
+        sprite.setScale({tyles[layout_plan[i][j]].first.first,
+                         tyles[layout_plan[i][j]].first.second});
+        sprite.setPosition(
+            {layout_coordinates[i][j].first, layout_coordinates[i][j].second});
+        window.draw(sprite);
+      }
     }
   }
   window.draw(main_text);
@@ -233,6 +241,23 @@ void DrawMap() {
   if (Player::getInstance()->isDead) {
     GameOver();
   }
+}
+void OpenMap() {
+    if (Player::getInstance()->x + 1 < map_size) {
+    unlocked_layout[Player::getInstance()->x + 1][Player::getInstance()->y] = 1;
+  }
+    if (Player::getInstance()->x - 1 >= 0) {
+      unlocked_layout[Player::getInstance()->x - 1][Player::getInstance()->y] =
+          1;
+    }
+    if (Player::getInstance()->y + 1 < map_size) {
+      unlocked_layout[Player::getInstance()->x][Player::getInstance()->y+1] =
+          1;
+    }
+    if (Player::getInstance()->y-1>=0) {
+      unlocked_layout[Player::getInstance()->x][Player::getInstance()->y-1] =
+          1;
+    }
 }
 void DrawButtle() {
   window.clear();

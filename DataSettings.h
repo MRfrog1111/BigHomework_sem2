@@ -12,15 +12,15 @@ const float task_text_x = 200;
 const float task_text_y = 200;
 const int window_widght = 400;
 const int window_height = 400;
-const std::string game_name = "TypeGame";
+const std::string type_game_name = "TypeGame";
 const float timer_time_def = 20;
 const float timer_minus_def = 1;
 //map objects generator
 const int min_chest_amount = 3;
 const int map_size = 8;
 const int map_rand_size = 100;
-const int empty_tyle_chance = 35;
-const int heal_tyle_chance = 70;
+const int empty_tyle_chance = 30;
+const int heal_tyle_chance = 75;
 const int monster1_tyle_chance = 80;
 const int monster2_tyle_chance = 90;
 const int chest_tyle_chance = 100;
@@ -35,6 +35,7 @@ const int key_tyle_idx = 7;
 const int open_door_tyle_idx = 8;
 const int player_start_pos[] = {2, 2};
 //map grid generator
+const std::string game_name = "Yakuza 67";
 const int rpg_window_widght = 1100;
 const int rpg_window_height = 1200;
 const float horizontal_border = 50;
