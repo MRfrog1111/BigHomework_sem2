@@ -135,6 +135,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="HardTypeGame.cpp" />
     <ClCompile Include="SimpleTypeGame.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MapGenerator.cpp" />
@@ -146,6 +147,7 @@
     <ClInclude Include="DataSettings.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="HardTypeGameSettings.h" />
     <ClInclude Include="MiniGameManager.h" />
     <ClInclude Include="Player.h" />
   </ItemGroup>

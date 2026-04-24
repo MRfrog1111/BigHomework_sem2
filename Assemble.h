@@ -23,4 +23,6 @@ void GameOver();
 void Win();
 void DrawMap();
 void FillMap();
+void Battle(int monster_id);
+void DrawButtle();
 #endif

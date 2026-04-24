@@ -48,7 +48,7 @@ static std::pair<std::pair<float, float>, std::string> tyles[] = {
     {{0.4, 0.4}, "Sprites/chest.jpg"},    {{0.4, 0.4}, "Sprites/key.jpg"},
     {{0.4, 0.4}, "Sprites/open_door.jpg"}};
 // player Settings
-static int player_hp = 5;
+static int player_hp = 10;
 static int player_atk = 1;
 static int player_bleed_dmg = 1;
 //chest settings
@@ -62,12 +62,15 @@ static int healing_potion_score_barrier = 1;
 static float healing_potion_timer = 5;
 //monster1 settings
 static int monster1_atk = 1;
-static int monster1_hp = 4;
+static int monster1_hp = 2;
 static int monster1_score_barrier = 3;
-static float monster1_timer = 20;
+static float monster1_timer = 100;
+static float min_timer_time_data = 5;
+static float timer_time_minus_data = 3;
+static int score_barrier_plus_data = 1;
 //monster2 settingss
 static int monster2_atk = 1;
 static int monster2_hp = 4;
 static int monster2_score_barrier = 3;
-static float monster2_timer = 20;
+static float monster2_timer = 10;
 #endif

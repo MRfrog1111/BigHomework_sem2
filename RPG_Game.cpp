@@ -32,6 +32,63 @@ void Start1() {
   float timer_minus = timer_minus_def;
   Play1(clock);
 }
+void Battle(int monster_id) { 
+    int turn = 0;
+    main_text.setString ("Battle starts! press any key to continue");
+    if (monster_id == monster1_tyle_idx) {
+      Monster1 monster;
+      while (monster.hp > 0) {
+        while (const std::optional event = window.pollEvent()) {
+          if (event->is<sf::Event::Closed>()) window.close();
+          if (const auto* keyPressed = event->getIf<sf::Event::TextEntered>()) {
+            if (turn % 2 == 0) {
+              main_text.setString("Player's turn || Battle: player hp: " +
+                                  std::to_string(Player::getInstance()->hp) +
+                                  " monster hp: " + std::to_string(monster.hp));
+              DrawButtle();
+              monster.GetDamage(Player::getInstance()->atk);
+
+            } else {
+              main_text.setString("Monster's turn || Battle: player hp: " +
+                                  std::to_string(Player::getInstance()->hp) +
+                                  " monster hp: " + std::to_string(monster.hp));
+              Player::getInstance()->GetDamage(monster.atk);
+              DrawButtle();
+            }
+            turn++;
+          }
+        }
+      }
+    }
+    if (monster_id == monster2_tyle_idx) {
+      Monster2 monster;
+      while (monster.hp > 0) {
+        while (const std::optional event = window.pollEvent()) {
+          if (event->is<sf::Event::Closed>()) window.close();
+          if (const auto* keyPressed = event->getIf<sf::Event::TextEntered>()) {
+             if (turn % 2 == 0) {
+              main_text.setString("Player's turn || Battle: player hp: " +
+                                  std::to_string(Player::getInstance()->hp) +
+                                  " monster hp: " + std::to_string(monster.hp));
+               DrawButtle();
+              monster.GetDamage(Player::getInstance()->atk);
+              
+            } else {
+               main_text.setString(
+                   "Monster's turn || Battle: player hp: " +
+                   std::to_string(Player::getInstance()->hp) +
+                   " monster hp: " + std::to_string(monster.hp));
+              Player::getInstance()->GetDamage(monster.atk);
+               DrawButtle();
+            }
+            turn++;
+          }
+        }
+      }
+    }
+    main_text.setString(upper_text + std::to_string(Player::getInstance()->hp));
+    DrawMap();
+}
 void FillMap() {
   int chest_idx = 0;
   for (int i = 0; i < map_size; i++) {
@@ -111,14 +168,16 @@ void MovePlayer(int next_x, int next_y) {
       } else {
         layout_plan[next_x][next_y] = empty_tyle_idx;
       }
-    } else if (layout_plan[next_x][next_y] == chest_tyle_idx) {
+    } 
+    else if (layout_plan[next_x][next_y] == chest_tyle_idx) {
       chests[{next_x, next_y}].GetDamage(Player::getInstance()->atk);
       if (Player::getInstance()->hasKey) {
         layout_plan[next_x][next_y] = key_tyle_idx;
       } else {
         layout_plan[next_x][next_y] = empty_tyle_idx;
       }
-    } else if (layout_plan[next_x][next_y] == key_tyle_idx) {
+    } 
+    else if (layout_plan[next_x][next_y] == key_tyle_idx) {
       layout_plan[next_x][next_y] = player_tyle_idx;
       layout_plan[Player::getInstance()->x][Player::getInstance()->y] =
           empty_tyle_idx;
@@ -128,10 +187,27 @@ void MovePlayer(int next_x, int next_y) {
       upper_text = "has key " + upper_text;
       layout_plan[door_coordinates.first][door_coordinates.second] =
           open_door_tyle_idx;
-    } else if (layout_plan[next_x][next_y] == open_door_tyle_idx) {
+    } 
+    else if (layout_plan[next_x][next_y] == open_door_tyle_idx) {
       if (Player::getInstance()->hasPickedUpKey) {
         Win();
       } 
+    } 
+    else if (layout_plan[next_x][next_y] == monster2_tyle_idx) {
+      Battle(monster2_tyle_idx);
+      layout_plan[next_x][next_y] = player_tyle_idx;
+      layout_plan[Player::getInstance()->x][Player::getInstance()->y] =
+          empty_tyle_idx;
+      Player::getInstance()->x = next_x;
+      Player::getInstance()->y = next_y;
+    }
+    else if (layout_plan[next_x][next_y] == monster1_tyle_idx) {
+      Battle(monster1_tyle_idx);
+      layout_plan[next_x][next_y] = player_tyle_idx;
+      layout_plan[Player::getInstance()->x][Player::getInstance()->y] =
+          empty_tyle_idx;
+      Player::getInstance()->x = next_x;
+      Player::getInstance()->y = next_y;
     }
     Player::getInstance()->GetDamage(player_bleed_dmg);
     main_text.setString(upper_text + std::to_string(Player::getInstance()->hp));
@@ -153,6 +229,18 @@ void DrawMap() {
     }
   }
   window.draw(main_text);
+  window.display();
+  if (Player::getInstance()->isDead) {
+    GameOver();
+  }
+}
+void DrawButtle() {
+  window.clear();
+  window.draw(main_text);
+  sf::Text text(font);
+  text.setPosition({100, 100});
+  text.setString("press Any key to continue");
+  window.draw(text);
   window.display();
   if (Player::getInstance()->isDead) {
     GameOver();
