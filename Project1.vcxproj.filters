@@ -30,12 +30,6 @@
     <ClCompile Include="Player.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="HardTypeGame.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Assemble.h">
@@ -51,12 +45,6 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="Entity.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="MiniGameManager.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="HardTypeGameSettings.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

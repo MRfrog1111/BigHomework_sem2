@@ -64,14 +64,14 @@ static float healing_potion_timer = 5;
 // monster1 settings
 static int monster1_atk = 1;
 static int monster1_hp = 2;
-static int monster1_score_barrier = 3;
+static int monster1_score_barrier = 2;
 static float monster1_timer = 100;
 static float min_timer_time_data = 5;
 static float timer_time_minus_data = 3;
 static int score_barrier_plus_data = 1;
 // monster2 settingss
 static int monster2_atk = 1;
-static int monster2_hp = 4;
+static int monster2_hp = 1;
 static int monster2_score_barrier = 3;
 static float monster2_timer = 10;
 #endif
