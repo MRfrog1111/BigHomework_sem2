@@ -2,7 +2,7 @@
 #define DATA_SETTINGS_H
 #include <string>
 #include <vector>
-//typegame settings
+// typegame settings
 const std::string alfabet_def = "abcdefghijklmnopqrstuvwxyz1234567890";
 const float timer_text_x = 0;
 const float timer_text_y = 0;
@@ -15,7 +15,7 @@ const int window_height = 400;
 const std::string type_game_name = "TypeGame";
 const float timer_time_def = 20;
 const float timer_minus_def = 1;
-//map objects generator
+// map objects generator
 const int min_chest_amount = 3;
 const int map_size = 8;
 const int map_rand_size = 100;
@@ -34,14 +34,14 @@ const int chest_tyle_idx = 6;
 const int key_tyle_idx = 7;
 const int open_door_tyle_idx = 8;
 const int player_start_pos[] = {2, 2};
-//map grid generator
+// map grid generator
 const std::string game_name = "Yakuza 67";
 const int rpg_window_widght = 1100;
 const int rpg_window_height = 1200;
 const float horizontal_border = 50;
 const float vertical_border = 100;
 const float grid_gap = 130;
-//sprite sources
+// sprite sources
 static std::pair<std::pair<float, float>, std::string> tyles[] = {
     {{0.4, 0.4}, "Sprites/grass.jpg"},    {{0.4, 0.4}, "Sprites/heal.jpg"},
     {{0.4, 0.4}, "Sprites/monster1.jpg"}, {{0.4, 0.4}, "Sprites/monster2.jpg"},
@@ -52,16 +52,16 @@ static std::pair<std::pair<float, float>, std::string> tyles[] = {
 static int player_hp = 10;
 static int player_atk = 1;
 static int player_bleed_dmg = 1;
-//chest settings
+// chest settings
 static int chest_score_barrier = 3;
 static float chest_timer = 20;
 static int chest_chance_max = 100;
-static std::vector<int> chest_chance_poll = {5,10,0,7,67,52};
-//healing potion settings
+static std::vector<int> chest_chance_poll = {5, 10, 0, 7, 67, 52};
+// healing potion settings
 static int heal_amount_data = 1;
 static int healing_potion_score_barrier = 1;
 static float healing_potion_timer = 5;
-//monster1 settings
+// monster1 settings
 static int monster1_atk = 1;
 static int monster1_hp = 2;
 static int monster1_score_barrier = 3;
@@ -69,7 +69,7 @@ static float monster1_timer = 100;
 static float min_timer_time_data = 5;
 static float timer_time_minus_data = 3;
 static int score_barrier_plus_data = 1;
-//monster2 settingss
+// monster2 settingss
 static int monster2_atk = 1;
 static int monster2_hp = 4;
 static int monster2_score_barrier = 3;

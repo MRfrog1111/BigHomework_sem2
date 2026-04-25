@@ -1,12 +1,15 @@
-#pragma once
+#ifndef PLAYER_H
+#define PLAYER_H
 #include <SFML/Graphics.hpp>
-#include "Entity.h"
+
 #include "DataSettings.h"
-class Player : public Entity{
+#include "Entity.h"
+class Player : public Entity {
   static Player* player;
   Player();
   Player(const Player&);
   Player& operator=(Player&);
+
  public:
   float x;
   float y;
@@ -20,10 +23,10 @@ class Player : public Entity{
     if (!player) player = new Player();
     return player;
   }
-  void GetDamage(int& damage) override { 
-	  hp -= damage;
+  void GetDamage(int& damage) override {
+    hp -= damage;
     if (hp <= 0) {
-            isDead = true;
+      isDead = true;
     }
   };
   void Reset() {
@@ -40,3 +43,4 @@ class Player : public Entity{
     this->isDead = false;
   }
 };
+#endif

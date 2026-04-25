@@ -1,20 +1,22 @@
-#pragma once
-#include "Entity.h"
-#include "Player.h"
+#ifndef ENEMY_H
+#define ENEMY_H
 #include "Assemble.h"
 #include "DataSettings.h"
-//Player* player = Player::getInstance();
+#include "Entity.h"
+#include "Player.h"
 class Enemy : Entity {
  public:
-   virtual void GetDamage(int& damage)=0;
+  virtual void GetDamage(int& damage) = 0;
+
  protected:
-   float timer_time;
-   int score_barrier;
+  float timer_time;
+  int score_barrier;
 };
 class Monster1 : Enemy {
   float min_timer_time;
   float timer_time_minus;
   int score_barrier_plus;
+
  public:
   int atk;
   int hp;
@@ -31,8 +33,7 @@ class Monster1 : Enemy {
   void GetDamage(int& damage) override {
     if (TypeWriterStart(score_barrier, timer_time)) {
       hp -= damage;
-    } 
-    else {
+    } else {
       GameOver();
     }
     score_barrier += score_barrier_plus;
@@ -61,6 +62,7 @@ class Monster2 : Enemy {
 };
 class Chest : Enemy {
   int key_chance;
+
  public:
   Chest(int key_chance_data) {
     this->score_barrier = chest_score_barrier;
@@ -90,19 +92,19 @@ class HealingPotion : Enemy {
   int heal_amount;
 
  public:
-  HealingPotion(){ 
-	this->score_barrier = healing_potion_score_barrier;
+  HealingPotion() {
+    this->score_barrier = healing_potion_score_barrier;
     this->timer_time = healing_potion_timer;
     this->heal_amount = heal_amount_data;
   };
-  virtual ~HealingPotion(){};
+  virtual ~HealingPotion() {};
 
-
-  void GetDamage(int& damage) override { 
-	if (TypeWriterStart(score_barrier,timer_time)) {
+  void GetDamage(int& damage) override {
+    if (TypeWriterStart(score_barrier, timer_time)) {
       Player::getInstance()->Heal(heal_amount);
     } else {
-            GameOver();
-      }
+      GameOver();
+    }
   }
 };
+#endif

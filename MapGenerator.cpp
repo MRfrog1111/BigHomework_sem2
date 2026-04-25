@@ -1,8 +1,7 @@
 #include <vector>
+
 #include "Assemble.h"
-// 0 - пустая клетка, 1 - хилка, 2 - монстр1, 3 - монстр2, 4 - выход, 5 - игрок 
-// процентное соотношение: 40, 35, 10, 10, 5
-void GenerateObjects(std::vector<std::vector<int>>&layout_plan) {
+void GenerateObjects(std::vector<std::vector<int>>& layout_plan) {
   std::random_device rd;
   std::mt19937 gen(rd());
   int chest_count = 0;
@@ -46,11 +45,12 @@ void GenerateObjects(std::vector<std::vector<int>>&layout_plan) {
   layout_plan[door_pos_x][door_pos_y] = exit_tyle_idx;
   layout_plan[player_start_pos[0]][player_start_pos[1]] = player_tyle_idx;
 }
-void GenerateCoordinates(std::vector<std::vector<std::pair<float, float>>>& layout_coordinates) { 
-  float x=0;
-  float y=0;
+void GenerateCoordinates(
+    std::vector<std::vector<std::pair<float, float>>>& layout_coordinates) {
+  float x = 0;
+  float y = 0;
   for (int i = 0; i < map_size; i++) {
-    x = horizontal_border+i*grid_gap;
+    x = horizontal_border + i * grid_gap;
     y = vertical_border;
     std::vector<std::pair<float, float>> buf_vector;
     layout_coordinates.push_back(buf_vector);
