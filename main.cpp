@@ -1,2 +1,2 @@
 #include "Assemble.h"
-int main() { Start1(); }
+int main() { Start(); }

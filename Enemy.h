@@ -7,12 +7,11 @@
 class Enemy : Entity {
  public:
   virtual void GetDamage(int& damage) = 0;
-
- protected:
   float timer_time;
   int score_barrier;
 };
-class Monster1 : Enemy {
+class Monster : public Enemy {
+ protected:
   float min_timer_time;
   float timer_time_minus;
   int score_barrier_plus;
@@ -20,6 +19,12 @@ class Monster1 : Enemy {
  public:
   int atk;
   int hp;
+  virtual ~Monster() {};
+  virtual void GetDamage(int& damage) = 0;
+  static Monster* createMonster(int id);
+};
+class Monster1 : public Monster {
+ public:
   Monster1() {
     this->score_barrier = monster1_score_barrier;
     this->timer_time = monster1_timer;
@@ -40,10 +45,8 @@ class Monster1 : Enemy {
     timer_time = std::max(monster1_timer - timer_time_minus, min_timer_time);
   }
 };
-class Monster2 : Enemy {
+class Monster2 : public Monster {
  public:
-  int atk;
-  int hp;
   Monster2() {
     this->score_barrier = monster2_score_barrier;
     this->timer_time = monster2_timer;

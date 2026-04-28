@@ -14,7 +14,7 @@ std::map<std::pair<int, int>, Chest> chests;
 std::pair<int, int> door_coordinates;
 std::string upper_text;
 std::vector<std::vector<int>> unlocked_layout;
-void Start1() {
+void Start() {
   window.clear();
   sprites_layout.clear();
   layout_plan.clear();
@@ -33,58 +33,31 @@ void Start1() {
   window.draw(main_text);
   window.display();
   DrawMap();
-  Play1(clock);
+  Play(clock);
 }
 void Battle(int monster_id) {
   int turn = 0;
   main_text.setString("Battle starts! press any key to continue");
-  if (monster_id == monster1_tyle_idx) {
-    Monster1 monster;
-    while (monster.hp > 0) {
-      while (const std::optional event = window.pollEvent()) {
-        if (event->is<sf::Event::Closed>()) window.close();
-        if (const auto* keyPressed = event->getIf<sf::Event::TextEntered>()) {
-          if (turn % 2 == 0) {
-            main_text.setString("Player's turn || Battle: player hp: " +
-                                std::to_string(Player::getInstance()->hp) +
-                                " monster hp: " + std::to_string(monster.hp));
-            DrawButtle();
-            monster.GetDamage(Player::getInstance()->atk);
+  auto monster = Monster::createMonster(monster_id);
+  while (monster->hp > 0) {
+    while (const std::optional event = window.pollEvent()) {
+      if (event->is<sf::Event::Closed>()) window.close();
+      if (const auto* keyPressed = event->getIf<sf::Event::TextEntered>()) {
+        if (turn % 2 == 0) {
+          main_text.setString("Player's turn || Battle: player hp: " +
+                              std::to_string(Player::getInstance()->hp) +
+                              " monster hp: " + std::to_string(monster->hp));
+          DrawBattle();
+          monster->GetDamage(Player::getInstance()->atk);
 
-          } else {
-            main_text.setString("Monster's turn || Battle: player hp: " +
-                                std::to_string(Player::getInstance()->hp) +
-                                " monster hp: " + std::to_string(monster.hp));
-            Player::getInstance()->GetDamage(monster.atk);
-            DrawButtle();
-          }
-          turn++;
+        } else {
+          main_text.setString("Monster's turn || Battle: player hp: " +
+                              std::to_string(Player::getInstance()->hp) +
+                              " monster hp: " + std::to_string(monster->hp));
+          Player::getInstance()->GetDamage(monster->atk);
+          DrawBattle();
         }
-      }
-    }
-  }
-  if (monster_id == monster2_tyle_idx) {
-    Monster2 monster;
-    while (monster.hp > 0) {
-      while (const std::optional event = window.pollEvent()) {
-        if (event->is<sf::Event::Closed>()) window.close();
-        if (const auto* keyPressed = event->getIf<sf::Event::TextEntered>()) {
-          if (turn % 2 == 0) {
-            main_text.setString("Player's turn || Battle: player hp: " +
-                                std::to_string(Player::getInstance()->hp) +
-                                " monster hp: " + std::to_string(monster.hp));
-            DrawButtle();
-            monster.GetDamage(Player::getInstance()->atk);
-
-          } else {
-            main_text.setString("Monster's turn || Battle: player hp: " +
-                                std::to_string(Player::getInstance()->hp) +
-                                " monster hp: " + std::to_string(monster.hp));
-            Player::getInstance()->GetDamage(monster.atk);
-            DrawButtle();
-          }
-          turn++;
-        }
+        turn++;
       }
     }
   }
@@ -127,7 +100,7 @@ void FillMap() {
     }
   }
 }
-void Play1(sf::Clock& clock) {
+void Play(sf::Clock& clock) {
   while (window.isOpen()) {
     while (const std::optional event = window.pollEvent()) {
       if (event->is<sf::Event::Closed>()) window.close();
@@ -150,67 +123,58 @@ void Play1(sf::Clock& clock) {
 }
 void MovePlayer(int next_x, int next_y) {
   if (next_x >= 0 && next_x < map_size && next_y >= 0 && next_y < map_size) {
-    if (layout_plan[next_x][next_y] == empty_tyle_idx) {
-      layout_plan[next_x][next_y] = player_tyle_idx;
-      layout_plan[Player::getInstance()->x][Player::getInstance()->y] =
-          empty_tyle_idx;
-      Player::getInstance()->x = next_x;
-      Player::getInstance()->y = next_y;
-    } else if (layout_plan[next_x][next_y] == heal_tyle_idx) {
-      HealingPotion healing_potion;
-      healing_potion.GetDamage(Player::getInstance()->atk);
-      layout_plan[next_x][next_y] = player_tyle_idx;
-      layout_plan[Player::getInstance()->x][Player::getInstance()->y] =
-          empty_tyle_idx;
-      Player::getInstance()->x = next_x;
-      Player::getInstance()->y = next_y;
-    } else if (layout_plan[next_x][next_y] == chest_tyle_idx) {
-      chests[{next_x, next_y}].GetDamage(Player::getInstance()->atk);
-      if (Player::getInstance()->hasKey) {
-        layout_plan[next_x][next_y] = key_tyle_idx;
-      } else {
-        layout_plan[next_x][next_y] = empty_tyle_idx;
-      }
-    } else if (layout_plan[next_x][next_y] == chest_tyle_idx) {
-      chests[{next_x, next_y}].GetDamage(Player::getInstance()->atk);
-      if (Player::getInstance()->hasKey) {
-        layout_plan[next_x][next_y] = key_tyle_idx;
-      } else {
-        layout_plan[next_x][next_y] = empty_tyle_idx;
-      }
-    } else if (layout_plan[next_x][next_y] == key_tyle_idx) {
-      layout_plan[next_x][next_y] = player_tyle_idx;
-      layout_plan[Player::getInstance()->x][Player::getInstance()->y] =
-          empty_tyle_idx;
-      Player::getInstance()->x = next_x;
-      Player::getInstance()->y = next_y;
-      Player::getInstance()->hasPickedUpKey = true;
-      upper_text = "has key " + upper_text;
-      layout_plan[door_coordinates.first][door_coordinates.second] =
-          open_door_tyle_idx;
-    } else if (layout_plan[next_x][next_y] == open_door_tyle_idx) {
-      if (Player::getInstance()->hasPickedUpKey) {
-        Win();
-      }
-    } else if (layout_plan[next_x][next_y] == monster2_tyle_idx) {
-      Battle(monster2_tyle_idx);
-      layout_plan[next_x][next_y] = player_tyle_idx;
-      layout_plan[Player::getInstance()->x][Player::getInstance()->y] =
-          empty_tyle_idx;
-      Player::getInstance()->x = next_x;
-      Player::getInstance()->y = next_y;
-    } else if (layout_plan[next_x][next_y] == monster1_tyle_idx) {
-      Battle(monster1_tyle_idx);
-      layout_plan[next_x][next_y] = player_tyle_idx;
-      layout_plan[Player::getInstance()->x][Player::getInstance()->y] =
-          empty_tyle_idx;
-      Player::getInstance()->x = next_x;
-      Player::getInstance()->y = next_y;
+    HealingPotion potion;
+    switch (layout_plan[next_x][next_y]) {
+      case (empty_tyle_idx):
+        ChangePlayerTyle(next_x, next_y);
+        break;
+      case (heal_tyle_idx):
+        potion.GetDamage(Player::getInstance()->atk);
+        ChangePlayerTyle(next_x, next_y);
+        break;
+      case (chest_tyle_idx):
+        chests[{next_x, next_y}].GetDamage(Player::getInstance()->atk);
+        if (Player::getInstance()->hasKey) {
+          layout_plan[next_x][next_y] = key_tyle_idx;
+        } else {
+          layout_plan[next_x][next_y] = empty_tyle_idx;
+        }
+        break;
+      case key_tyle_idx:
+        ChangePlayerTyle(next_x, next_y);
+        Player::getInstance()->hasPickedUpKey = true;
+        upper_text = "has key " + upper_text;
+        layout_plan[door_coordinates.first][door_coordinates.second] =
+            open_door_tyle_idx;
+        break;
+      case open_door_tyle_idx:
+        if (Player::getInstance()->hasPickedUpKey) {
+          Win();
+        }
+        break;
+      case monster2_tyle_idx:
+        Battle(monster2_tyle_idx);
+        ChangePlayerTyle(next_x, next_y);
+        break;
+      case monster1_tyle_idx:
+        Battle(monster1_tyle_idx);
+        layout_plan[next_x][next_y] = player_tyle_idx;
+        ChangePlayerTyle(next_x, next_y);
+        break;
+      default:
+        break;
     }
     Player::getInstance()->GetDamage(player_bleed_dmg);
     main_text.setString(upper_text + std::to_string(Player::getInstance()->hp));
     DrawMap();
   }
+}
+void ChangePlayerTyle(int next_x, int next_y) {
+  layout_plan[next_x][next_y] = player_tyle_idx;
+  layout_plan[Player::getInstance()->x][Player::getInstance()->y] =
+      empty_tyle_idx;
+  Player::getInstance()->x = next_x;
+  Player::getInstance()->y = next_y;
 }
 void DrawMap() {
   window.clear();
@@ -249,7 +213,7 @@ void OpenMap() {
     unlocked_layout[Player::getInstance()->x][Player::getInstance()->y - 1] = 1;
   }
 }
-void DrawButtle() {
+void DrawBattle() {
   window.clear();
   window.draw(main_text);
   sf::Text text(font);
@@ -271,7 +235,7 @@ void Win() {
     while (const std::optional event = window.pollEvent()) {
       if (event->is<sf::Event::Closed>()) window.close();
       if (event->is<sf::Event::KeyPressed>()) {
-        Start1();
+        Start();
       }
     }
   }
@@ -286,7 +250,7 @@ void GameOver() {
     while (const std::optional event = window.pollEvent()) {
       if (event->is<sf::Event::Closed>()) window.close();
       if (event->is<sf::Event::KeyPressed>()) {
-        Start1();
+        Start();
       }
     }
   }
